@@ -3,9 +3,15 @@
 	Note that Blooket randomises the order of questions for each player.
 """
 
-import requests, json, string, random
+import requests, json, string, random, argparse
 
-gamePin = str(input("Game pin: "))
+parser = argparse.ArgumentParser(description="Test")
+parser.add_argument("-p", help="Game pin")
+
+args = parser.parse_args()
+
+gamePin = str(args.p)
+
 # Set name as a random string
 name = ''.join(random.choices(string.ascii_letters+string.digits,k=9))
 
@@ -18,6 +24,9 @@ r = requests.put("https://api.blooket.com/api/firebase/join", data={
 })
 
 # Get gameID from the request response
+if "msg" in json.loads(r.text) and json.loads(r.text)["msg"] == "no game":
+	print("No game exists with that pin")
+	exit()
 firstPart = r.text.split('"set":"')[1]
 gameID = firstPart[0:firstPart.index('"')]
 
@@ -30,6 +39,8 @@ r = requests.delete(f"https://api.blooket.com/api/firebase/client?id={gamePin}&n
 r = requests.get(f"https://api.blooket.com/api/games?gameId={gameID}")
 questions = json.loads(r.text)["questions"]
 # For each question in the array
+answersList = "Answers:"
 for question in questions:
-	# Print the question, and thefirst correct answer for the question
-	print(f"{question['question']}: {question['correctAnswers'][0]}")
+	# Append the question and the first correct answer for the question to the output string
+	answersList += f"\n{question['question']}: {question['correctAnswers'][0]}"
+print(answersList)
