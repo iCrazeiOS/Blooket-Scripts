@@ -8,12 +8,15 @@ import requests, json, argparse
 
 parser = argparse.ArgumentParser(description="Test")
 parser.add_argument("-p", help="Game pin")
-parser.add_argument("-n", help="Name to whitelist")
+parser.add_argument("-n", help="Name to exclude")
 
 args = parser.parse_args()
 
 gamePin = str(args.p)
 nameToBypass = str(args.n)
+
+if gamePin == "None": gamePin = str(input("Game pin: "))
+if nameToBypass == "None": nameToBypass = str(input("Name to exclude: "))
 
 # Join the game with our fake player
 # We use this player to get some info about the game session

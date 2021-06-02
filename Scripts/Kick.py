@@ -13,6 +13,9 @@ args = parser.parse_args()
 gamePin = str(args.p)
 name = str(args.n)
 
+if gamePin == "None": gamePin = str(input("Game pin: "))
+if name == "None": name = str(input("Name to kick: "))
+
 # Sends request to kick the specified player
 r = requests.delete(f"https://api.blooket.com/api/firebase/client?id={gamePin}&name={name}", headers={
 	"Referer": "https://www.blooket.com/"

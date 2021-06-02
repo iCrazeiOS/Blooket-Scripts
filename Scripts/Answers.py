@@ -12,6 +12,8 @@ args = parser.parse_args()
 
 gamePin = str(args.p)
 
+if gamePin == "None": gamePin = str(input("Game pin: "))
+
 # Set name as a random string
 name = ''.join(random.choices(string.ascii_letters+string.digits,k=9))
 

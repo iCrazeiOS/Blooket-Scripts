@@ -7,6 +7,8 @@ args = parser.parse_args()
 
 gamePin = str(args.p)
 
+if gamePin == "None": gamePin = str(input("Game pin: "))
+
 # Join the game with our fake player
 # We use this player to get some info about the game session
 r = requests.put("https://api.blooket.com/api/firebase/join", data={
